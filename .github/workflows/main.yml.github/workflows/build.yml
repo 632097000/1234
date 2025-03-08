@@ -1,0 +1,32 @@
+name: Android ARM64编译
+
+on:
+  workflow_dispatch:  # 允许手动触发
+  push:               # 代码推送时自动触发
+    branches: [ "main" ]
+    paths: 
+      - 'src/**'      # 仅监控src目录变化
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v3
+
+      - name: 安装NDK
+        uses: android-actions/setup-android@v2
+        with:
+          ndk-version: '25.1.8937393'  # NDK版本
+
+      - name: 编译ARM64程序
+        run: |
+          ${{ env.ANDROID_NDK_HOME }}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android30-clang \
+            -static src/main.c \
+            -o mprotect_tool
+
+      - name: 上传制品
+        uses: actions/upload-artifact@v3
+        with:
+          name: android程序
+          path: mprotect_tool
