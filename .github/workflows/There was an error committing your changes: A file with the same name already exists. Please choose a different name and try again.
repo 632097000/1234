@@ -1,0 +1,21 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/mman.h>
+
+int main（int argc，char ** argv）{
+    如果（ argc = 5）{
+        fprintf（Stderr，“用法：％s <s <进程id> <ance> <长度><权限><权限>\ n”，argv [ 0 ]）;
+        返回1;
+    }
+    
+    pid_t pid = atoi（argv [ 1 ]）;
+    未签名的长addr = strtoul（argv [ 2 ]，null，16）;
+    size_t = strtoul（argv [ 3 ] ， null ， 10）;
+    int prot = atoi（argv [ 4 ]）；
+    
+    如果mmmprotect （（（ void*）addr，（== -1）{
+        Perror（“ [ - ]内存保护修改失败”）;
+        返回2;
+    }
+    返回0;
+}
